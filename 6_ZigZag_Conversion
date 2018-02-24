@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/zigzag-conversion/description/
+// The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+// P   A   H   N
+// A P L S I I G
+// Y   I   R
+// And then read line by line: "PAHNAPLSIIGYIR"
+
+C++:
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows==1)
+            return s;
+        int maxi=numRows-1,len=s.length();
+        int i,j=0,p=0,jj;
+        /*二维数组的动态分配没这么简单,记住*/
+        char** array = new char*[numRows];  //指针数组
+        for(int k=0;k<numRows;k++){
+            array[k]=new char[len];
+            memset(array[k],0,len*sizeof(char));
+        }
+        for(i=0;p<len;i++){
+            array[i][j]=s[p++];
+            if(i==maxi){
+              while(i>0&&p<len){
+                  jj=j;
+                  array[--i][++j]=s[p++];
+                  jj=j;
+              }  
+            }
+            jj=j;
+        }
+        string output;
+        for(i=0;i<numRows;i++){
+            for(j=0;j<=jj;j++){
+                if(array[i][j]!=0){
+                    output.append(string(1,array[i][j]));
+                }
+            }
+        }
+        return output;
+    }
+};
