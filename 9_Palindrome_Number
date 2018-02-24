@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/palindrome-number/description/
+// Determine whether an integer is a palindrome. Do this without extra space.
+
+C++:
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x<0) return 0;
+        if(x>=0&&x<=9) return 1;
+        int len = (int)log10(x);  // 123456 len=5 
+        int i=1,j=len-i;  // i=1,j=5
+        int ii,jj;
+        if(x%10!=x/(int)pow(10,len)){ //pow函数返回的是double，而/ 只有在除数和被除数都是整型时才能返回整型数
+            return 0;
+        }else{
+            if(len==1)
+                return 1;
+        }
+        while(i<=j){//i=1,2; j=4,3; 
+            ii=pow(10,i);
+            jj=pow(10,j);
+            if((x%(ii*10)-x%ii)/ii != (x/jj-x/(jj*10)*10)) 
+                return 0;
+            i++;j--;
+        }
+        return 1;
+    }
+};
