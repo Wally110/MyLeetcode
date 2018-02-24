@@ -1,0 +1,61 @@
+// https://leetcode.com/problems/longest-palindromic-substring/description/
+// Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+
+C++:
+#include<vector>
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        // Insert '#'
+    string t = "$#";
+    for (int i = 0; i < s.size(); ++i) {
+        t += s[i];
+        t += "#";
+    }
+    // Process t
+    vector<int> p(t.size(), 0);
+    int mx = 0, id = 0, resLen = 0, resCenter = 0;
+    for (int i = 1; i < t.size(); ++i) {
+        p[i] = mx > i ? min(p[2 * id - i], mx - i) : 1;
+        while (t[i + p[i]] == t[i - p[i]]) ++p[i];
+        if (resLen < p[i]) {
+            resLen = p[i];
+            resCenter = i;
+        }
+        if (mx < i + p[i]) {
+            mx = i + p[i];
+            id = i;
+        }
+        
+    }
+    return s.substr((resCenter - resLen) / 2, resLen - 1);
+    }
+};
+
+Java:
+class Solution {
+    public String longestPalindrome(String s) {
+        String str="$#";
+        int[] p = new int[2*s.length()+2];
+        int id=0, mx=0,resLen = 0, resCenter = 0;;
+        for(int i=0;i<s.length();i++){
+            str+=s.substring(i,i+1);
+            str+="#";
+        }
+        for(int i=1;i<str.length();i++){
+            p[i]=(mx>i? Math.min(p[2*id-i],mx-i):1);//半径最小是1
+            while(i-p[i]>0&&i+p[i]<str.length()&&str.charAt(i-p[i])==str.charAt(i+p[i])) {
+                p[i]++;
+            }
+            if(mx<i+p[i]){
+                mx=i+p[i];
+                id=i;
+            }
+            if (resLen < p[i]) {
+                resLen = p[i];
+                resCenter = i;
+            }
+        }
+        return s.substring((resCenter - resLen) / 2,(resCenter - resLen) / 2+resLen-1);        
+    }
+}
